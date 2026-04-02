@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm Từ vựng Tiếng Hàn: Học đường & Xã hội</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 550px;
+        }
+        h2 { text-align: center; color: #2c3e50; }
+        .question { font-size: 1.1em; font-weight: bold; margin-bottom: 15px; line-height: 1.4; }
+        .choices { display: flex; flex-direction: column; gap: 10px; }
+        .choice-btn {
+            background: #ecf0f1;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: background 0.3s;
+        }
+        .choice-btn:hover { background: #bdc3c7; }
+        .choice-btn:disabled { cursor: not-allowed; opacity: 0.9; }
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #e8f8f5;
+            border-left: 4px solid #1abc9c;
+            display: none;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .btn-next {
+            margin-top: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            display: none;
+            font-weight: bold;
+        }
+        .btn-next:hover { background: #2980b9; }
+        .correct { background: #2ecc71 !important; color: white; }
+        .wrong { background: #e74c3c !important; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>Quiz: Học đường & Xã hội 🎓</h2>
+    <div id="quiz-content">
+        <div class="question" id="question">Đang tải câu hỏi...</div>
+        <div class="choices" id="choices"></div>
+        <div class="explanation" id="explanation"></div>
+        <button class="btn-next" id="next-btn" onclick="nextQuestion()">Câu tiếp theo</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "1. Từ viết tắt '야자' trong môi trường học đường Hàn Quốc có nghĩa là gì?",
+            choices: ["Cây dừa", "Hồ sơ học tập", "Tự học ban đêm", "Kỳ thi đại học"],
+            correct: 2,
+            explanation: "<b>Đáp án đúng: Tự học ban đêm.</b><br>Đây là từ viết tắt của '야간 자율 학습' (Dạ gian tự luật học tập - Tự học ban đêm). Học sinh Hàn thường ở lại trường học đến tối mịt."
+        },
+        {
+            question: "2. Cụm từ nào mang ý nghĩa 'xử phạt nhẹ nhàng, qua loa' đối với những lỗi lầm nghiêm trọng?",
+            choices: ["솜방망이 처벌", "사랑의 매", "패널티", "체벌"],
+            correct: 0,
+            explanation: "<b>Đáp án đúng: 솜방망이 처벌.</b><br>'솜' là bông, '방망이' là cây gậy, '처벌' (Xử phạt). Đánh bằng 'gậy bông' thì không hề đau, từ này dùng để mỉa mai những hình phạt quá nhẹ so với tội lỗi gây ra."
+        },
+        {
+            question: "3. Trong tiếng Hàn, từ '사이다' (nước ngọt có ga/cider) được dùng như một từ lóng để chỉ điều gì?",
+            choices: ["Sự bực tức, oan ức", "Cảm giác sảng khoái, thỏa mãn", "Người nổi tiếng", "Sự chữa lành"],
+            correct: 1,
+            explanation: "<b>Đáp án đúng: Cảm giác sảng khoái, thỏa mãn.</b><br>Khi xem phim hoặc thấy một tình huống giải quyết dứt khoát, trừng trị kẻ xấu đích đáng, người Hàn dùng từ này vì nó mang lại cảm giác 'đã' như khi uống nước có ga mát lạnh."
+        },
+        {
+            question: "4. Cụm từ nào chỉ sự tăng trưởng kinh tế thần tốc của Hàn Quốc sau chiến tranh?",
+            choices: ["생기부", "트라우마", "수능 시즌", "한강의 기적"],
+            correct: 3,
+            explanation: "<b>Đáp án đúng: 한강의 기적.</b><br>Hán Việt là 'Hán Giang kỳ tích', dịch ra là 'Kỳ tích sông Hàn'. Đây là cụm từ nổi tiếng toàn thế giới khi nói về sự vươn lên của kinh tế Hàn Quốc."
+        },
+        {
+            question: "5. Từ nào diễn tả cảm giác 'bất công, oan ức'?",
+            choices: ["억울하다", "끔찍하다", "공정하다", "여유"],
+            correct: 0,
+            explanation: "<b>Đáp án đúng: 억울하다.</b><br>'억울하다' nghĩa là oan ức. Các từ còn lại: 끔찍하다 (Kinh khủng), 공정하다 (Công chính/Công bằng), 여유 (Sự dư dả/Thảnh thơi)."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    const questionEl = document.getElementById("question");
+    const choicesEl = document.getElementById("choices");
+    const explanationEl = document.getElementById("explanation");
+    const nextBtn = document.getElementById("next-btn");
+
+    function loadQuestion() {
+        explanationEl.style.display = "none";
+        nextBtn.style.display = "none";
+        choicesEl.innerHTML = "";
+        
+        const currentQuiz = quizData[currentQuestionIndex];
+        questionEl.innerText = currentQuiz.question;
+
+        currentQuiz.choices.forEach((choice, index) => {
+            const button = document.createElement("button");
+            button.innerText = choice;
+            button.classList.add("choice-btn");
+            button.onclick = () => selectAnswer(index, button);
+            choicesEl.appendChild(button);
+        });
+    }
+
+    function selectAnswer(selectedIndex, button) {
+        const currentQuiz = quizData[currentQuestionIndex];
+        const allButtons = choicesEl.children;
+
+        for (let i = 0; i < allButtons.length; i++) {
+            allButtons[i].disabled = true;
+            if (i === currentQuiz.correct) {
+                allButtons[i].classList.add("correct");
+            }
+        }
+
+        if (selectedIndex !== currentQuiz.correct) {
+            button.classList.add("wrong");
+        }
+
+        explanationEl.innerHTML = currentQuiz.explanation;
+        explanationEl.style.display = "block";
+        nextBtn.style.display = "block";
+
+        if (currentQuestionIndex === quizData.length - 1) {
+            nextBtn.innerText = "Làm lại từ đầu";
+        } else {
+            nextBtn.innerText = "Câu tiếp theo";
+        }
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            loadQuestion();
+        } else {
+            currentQuestionIndex = 0;
+            loadQuestion();
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
